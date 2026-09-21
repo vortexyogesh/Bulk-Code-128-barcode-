@@ -26,7 +26,7 @@ interface BloggerEmbedModalProps {
 }
 
 export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, onClose }) => {
-  const [embedType, setEmbedType] = useState<'download' | 'standalone' | 'iframe' | 'guide'>('download');
+  const [embedType, setEmbedType] = useState<'standalone' | 'download' | 'iframe' | 'guide'>('standalone');
   const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
@@ -37,8 +37,8 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
   const fullHtmlCode = getFullStandaloneHtmlDocument();
 
   let activeCode = '';
-  if (embedType === 'download') activeCode = fullHtmlCode;
-  else if (embedType === 'standalone') activeCode = standaloneCode;
+  if (embedType === 'standalone') activeCode = standaloneCode;
+  else if (embedType === 'download') activeCode = fullHtmlCode;
   else if (embedType === 'iframe') activeCode = iframeCode;
 
   const handleCopy = () => {
@@ -62,10 +62,10 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-900 leading-tight">
-                Download Standalone HTML &amp; Blogger Embed
+                Full Code 128 Tool for Blogger Page &amp; Standalone HTML
               </h3>
               <p className="text-xs text-slate-500">
-                Download as a single offline HTML file or copy embed code for Blogger
+                1-click copy full tool to paste in Blogger or download as single offline .html file
               </p>
             </div>
           </div>
@@ -82,6 +82,19 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
         <div className="flex border-b border-slate-200 px-6 pt-3 gap-2 sm:gap-4 bg-white overflow-x-auto">
           <button
             type="button"
+            onClick={() => setEmbedType('standalone')}
+            className={`pb-3 text-xs font-semibold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+              embedType === 'standalone'
+                ? 'border-blue-600 text-blue-700'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <Code2 className="w-3.5 h-3.5 text-blue-600" />
+            <span>Full Tool for Blogger Page (HTML)</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setEmbedType('download')}
             className={`pb-3 text-xs font-semibold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               embedType === 'download'
@@ -90,20 +103,7 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
             }`}
           >
             <FileDown className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Download HTML File</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setEmbedType('standalone')}
-            className={`pb-3 text-xs font-semibold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
-              embedType === 'standalone'
-                ? 'border-slate-900 text-slate-900'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
-          >
-            <Code2 className="w-3.5 h-3.5 text-amber-600" />
-            <span>Blogger Gadget Widget</span>
+            <span>Download .html File</span>
           </button>
 
           <button
@@ -129,12 +129,55 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>Blogger Guide</span>
+            <span>How to Paste in Blogger</span>
           </button>
         </div>
 
         {/* Modal Body */}
         <div className="p-6 flex-1 overflow-y-auto space-y-4">
+          {embedType === 'standalone' && (
+            <div>
+              <div className="p-3 bg-blue-50/90 border border-blue-200 rounded-xl text-xs text-blue-950 mb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <div className="font-bold text-sm text-blue-900 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
+                    Full Tool Ready for Blogger Page / Post / Gadget
+                  </div>
+                  <p className="mt-1 text-blue-800 leading-relaxed">
+                    Paste this code directly into your Blogger <strong>Page</strong> or <strong>Post</strong> in <strong>HTML view (&lt;&gt;)</strong>, or in <strong>Layout &rarr; Add a Gadget &rarr; HTML/JavaScript</strong>. Includes bulk input, live 4x6 preview, zoom, page navigation, direct print, and PDF generation.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors shadow-xs cursor-pointer shrink-0"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copy Full Blogger Tool</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="relative">
+                <div className="flex items-center justify-between pb-1.5 text-xs text-slate-500 font-medium">
+                  <span>Complete Blogger HTML / CSS / JS Code</span>
+                  <span>{standaloneCode.length.toLocaleString()} characters</span>
+                </div>
+                <pre className="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs font-mono overflow-x-auto max-h-[300px] border border-slate-800 selection:bg-blue-500 selection:text-white">
+                  <code>{standaloneCode}</code>
+                </pre>
+              </div>
+            </div>
+          )}
+
           {embedType === 'download' && (
             <div className="space-y-4">
               <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -144,7 +187,7 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
                     Standalone HTML File (All-in-One)
                   </div>
                   <p className="mt-1 text-emerald-800 leading-relaxed max-w-xl">
-                    A single portable <code>.html</code> file containing the entire tool (CSS, JS, bulk creator, live 4x6 preview, and 4x6 thermal PDF generator). Double-click to run locally or upload anywhere.
+                    A single portable <code>.html</code> file containing the entire tool (CSS, JS, bulk creator, live 4x6 preview, single PNG export, and 4x6 thermal PDF generator). Works locally in any browser offline or online.
                   </p>
                 </div>
                 <button
@@ -164,30 +207,6 @@ export const BloggerEmbedModal: React.FC<BloggerEmbedModalProps> = ({ isOpen, on
                 </div>
                 <pre className="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs font-mono overflow-x-auto max-h-[260px] border border-slate-800">
                   <code>{fullHtmlCode}</code>
-                </pre>
-              </div>
-            </div>
-          )}
-
-          {embedType === 'standalone' && (
-            <div>
-              <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl text-xs text-amber-950 mb-3 flex items-start gap-2.5">
-                <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold">100% Standalone Blogger Gadget:</span>
-                  <p className="mt-0.5 text-amber-900 leading-relaxed">
-                    This snippet includes all styles, scripts (JsBarcode + jsPDF via CDN), bulk input, live preview, and 4x6 PDF download. You can paste it directly into Blogger&apos;s <strong>HTML/JavaScript Gadget</strong> or any <strong>Blog Post</strong> using HTML view.
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative">
-                <div className="flex items-center justify-between pb-1.5 text-xs text-slate-500 font-medium">
-                  <span>HTML / JavaScript Code Snippet</span>
-                  <span>{standaloneCode.length} characters</span>
-                </div>
-                <pre className="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs font-mono overflow-x-auto max-h-[300px] border border-slate-800 selection:bg-amber-500 selection:text-slate-900">
-                  <code>{standaloneCode}</code>
                 </pre>
               </div>
             </div>

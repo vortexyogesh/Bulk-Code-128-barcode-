@@ -1,343 +1,39 @@
 /**
  * Generates ready-to-paste code snippets and downloadable standalone HTML files for Blogger & offline usage.
+ * Everything is fully self-contained in a single tool without external files or folders.
  */
 
 export function getBloggerIframeCode(appUrl: string): string {
-  const safeUrl = appUrl || window.location.href;
+  const safeUrl = appUrl || (typeof window !== 'undefined' ? window.location.href : '');
   return `<!-- Code 128 Bulk Barcode 4x6 PDF Generator - Blogger Embed -->
-<div style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+<div style="width: 100%; max-width: 1200px; margin: 0 auto; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
   <iframe
     src="${safeUrl}"
     title="Code 128 Bulk Barcode 4x6 PDF Generator"
-    style="width: 100%; height: 860px; border: none; display: block;"
+    style="width: 100%; height: 880px; border: none; display: block;"
     allow="clipboard-write"
     loading="lazy">
   </iframe>
 </div>`;
 }
 
-export function getBloggerStandaloneWidgetCode(): string {
-  return `<!-- ============================================================= -->
-<!-- Code 128 Bulk Barcode 4x6 Label Generator for Blogger (Blogspot) -->
-<!-- Copy & Paste into Blogger: Layout -> Add a Gadget -> HTML/JavaScript -->
-<!-- OR paste in any Post/Page using the HTML View (<>) -->
-<!-- ============================================================= -->
-<div id="blogger-barcode-app" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 850px; margin: 20px auto; padding: 24px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); color: #1e293b; box-sizing: border-box;">
-  
-  <!-- Header -->
-  <div style="text-align: center; margin-bottom: 24px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px;">
-    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: #0f172a;">
-      Code 128 Bulk Barcode Generator
-    </h2>
-    <p style="margin: 0; font-size: 14px; color: #64748b;">
-      Generate bulk Code 128 barcodes and download standard 4x6 inch thermal label PDFs (Max 4 per page).
-    </p>
-  </div>
-
-  <!-- Main Inputs -->
-  <div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px;">
-    <div>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <label style="font-size: 13px; font-weight: 600; color: #334155;">
-          Enter Barcodes (One per line or comma-separated):
-        </label>
-        <button id="bb-sample-btn" type="button" style="background: none; border: none; color: #2563eb; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline;">
-          Load Sample Codes
-        </button>
-      </div>
-      <textarea id="bb-input" rows="6" style="width: 100%; box-sizing: border-box; padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-family: monospace; font-size: 13px; line-height: 1.5; resize: vertical;" placeholder="FMPP4162047741&#10;FMPC6265465305&#10;FMPP4161144943&#10;FMPP4110839820"></textarea>
-    </div>
-
-    <!-- Quick Settings Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
-      <div>
-        <label style="display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px;">Barcodes Per 4x6 Page:</label>
-        <select id="bb-per-page" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff;">
-          <option value="4" selected>4 Barcodes (Standard • Max 4)</option>
-          <option value="3">3 Barcodes (Spacious)</option>
-          <option value="2">2 Barcodes (Large)</option>
-          <option value="1">1 Barcode (Single Extra Large)</option>
-          <option value="5">5 Barcodes (Compact)</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px;">Barcode Height:</label>
-        <select id="bb-height" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff;">
-          <option value="42">Compact (42px)</option>
-          <option value="55" selected>Standard (55px • Recommended)</option>
-          <option value="68">Tall (68px)</option>
-          <option value="80">Extra Tall (80px)</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px;">Bar Density (Width Scale):</label>
-        <select id="bb-density" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff;">
-          <option value="1.5">Fine / Compact (1.5x)</option>
-          <option value="2.0" selected>Standard Crisp (2.0x • High Scan)</option>
-          <option value="2.5">Bold / Wide (2.5x)</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px;">Label Text Font:</label>
-        <select id="bb-font" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff;">
-          <option value="monospace" selected>Monospace (OCR Style)</option>
-          <option value="sans-serif">Clean Sans-Serif</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px;">Cut Line Guides:</label>
-        <select id="bb-cutlines" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff;">
-          <option value="yes" selected>Show Dashed Lines</option>
-          <option value="no">None (Clean)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- Action Bar -->
-  <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px;">
-    <button id="bb-preview-btn" type="button" style="flex: 1; min-width: 160px; padding: 12px 18px; background: #0f172a; color: #ffffff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
-      Generate & Preview
-    </button>
-    <button id="bb-pdf-btn" type="button" style="flex: 1; min-width: 180px; padding: 12px 18px; background: #2563eb; color: #ffffff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
-      Download 4x6 PDF
-    </button>
-    <button id="bb-print-btn" type="button" style="padding: 12px 18px; background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
-      Print 4x6
-    </button>
-  </div>
-
-  <!-- Status / Stats -->
-  <div id="bb-status" style="margin-bottom: 16px; font-size: 13px; color: #475569; font-weight: 500;">
-    Ready. Enter barcode text and click Generate.
-  </div>
-
-  <!-- Live 4x6 Label Visual Preview Box -->
-  <div style="background: #e2e8f0; padding: 24px; border-radius: 12px; text-align: center;">
-    <div style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
-      4x6 Label Live Preview (Page 1)
-    </div>
-    <!-- 4x6 aspect ratio container (approx 320px x 480px) -->
-    <div id="bb-preview-page" style="width: 320px; min-height: 480px; margin: 0 auto; background: #ffffff; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); padding: 20px 16px; display: flex; flex-direction: column; justify-content: space-around; box-sizing: border-box;">
-      <div style="color: #94a3b8; font-size: 13px;">No barcodes generated yet</div>
-    </div>
-  </div>
-</div>
-
-<!-- Required CDN Dependencies (JsBarcode + jsPDF) -->
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
-
-<script>
-(function() {
-  var sampleData = ["FMPP4162047741", "FMPC6265465305", "FMPP4161144943", "FMPP4110839820", "FMPC6277475378", "FMPP4162047749", "FMPC6265465312", "FMPP4161144955"];
-  var inputEl = document.getElementById("bb-input");
-  var sampleBtn = document.getElementById("bb-sample-btn");
-  var previewBtn = document.getElementById("bb-preview-btn");
-  var pdfBtn = document.getElementById("bb-pdf-btn");
-  var printBtn = document.getElementById("bb-print-btn");
-  var previewPage = document.getElementById("bb-preview-page");
-  var statusEl = document.getElementById("bb-status");
-  var perPageEl = document.getElementById("bb-per-page");
-  var heightEl = document.getElementById("bb-height");
-  var densityEl = document.getElementById("bb-density");
-  var fontEl = document.getElementById("bb-font");
-  var cutlinesEl = document.getElementById("bb-cutlines");
-
-  // Load sample codes
-  sampleBtn.onclick = function() {
-    inputEl.value = sampleData.join("\\n");
-    renderPreview();
-  };
-
-  function getCodes() {
-    var raw = inputEl.value || "";
-    return raw.split(/[\\r\\n,]+/).map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; });
-  }
-
-  function renderPreview() {
-    var codes = getCodes();
-    var perPage = parseInt(perPageEl.value, 10) || 4;
-    var barHeight = parseInt(heightEl.value, 10) || 55;
-    var barWidth = parseFloat(densityEl.value) || 2.0;
-    var barFont = fontEl.value || "monospace";
-    var showCut = cutlinesEl.value === "yes";
-
-    if (codes.length === 0) {
-      previewPage.innerHTML = '<div style="color: #94a3b8; font-size: 13px; margin: auto;">Enter barcode values above</div>';
-      statusEl.textContent = "Please enter at least one barcode.";
-      return;
-    }
-
-    var totalPages = Math.ceil(codes.length / perPage);
-    statusEl.innerHTML = "<strong>" + codes.length + " barcodes</strong> detected &bull; <strong>" + totalPages + " total 4x6 page(s)</strong> (showing Page 1 preview below)";
-
-    var firstPageCodes = codes.slice(0, perPage);
-    previewPage.innerHTML = "";
-
-    for (var i = 0; i < firstPageCodes.length; i++) {
-      var itemDiv = document.createElement("div");
-      itemDiv.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 0;" + (showCut && i < firstPageCodes.length - 1 ? " border-bottom: 1px dashed #cbd5e1;" : "");
-      
-      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.style.maxWidth = "100%";
-      svg.style.height = "auto";
-      itemDiv.appendChild(svg);
-      previewPage.appendChild(itemDiv);
-
-      try {
-        JsBarcode(svg, firstPageCodes[i], {
-          format: "CODE128",
-          width: barWidth,
-          height: barHeight,
-          displayValue: true,
-          font: barFont,
-          fontSize: 14,
-          textMargin: 4,
-          margin: 4
-        });
-      } catch (e) {
-        itemDiv.innerHTML = '<span style="color: #dc2626; font-size: 11px;">Invalid Code 128: ' + firstPageCodes[i] + '</span>';
-      }
-    }
-  }
-
-  previewBtn.onclick = renderPreview;
-  perPageEl.onchange = renderPreview;
-  heightEl.onchange = renderPreview;
-  densityEl.onchange = renderPreview;
-  fontEl.onchange = renderPreview;
-  cutlinesEl.onchange = renderPreview;
-
-  // PDF Download
-  pdfBtn.onclick = function() {
-    var codes = getCodes();
-    if (codes.length === 0) {
-      alert("Please enter barcode values first.");
-      return;
-    }
-
-    statusEl.textContent = "Generating high-resolution 4x6 PDF...";
-    var perPage = parseInt(perPageEl.value, 10) || 4;
-    var barHeight = parseInt(heightEl.value, 10) || 55;
-    var barWidth = parseFloat(densityEl.value) || 2.0;
-    var barFont = fontEl.value || "monospace";
-    var showCut = cutlinesEl.value === "yes";
-
-    var { jsPDF } = window.jspdf;
-    var doc = new jsPDF({
-      orientation: "portrait",
-      unit: "in",
-      format: [4.0, 6.0]
-    });
-
-    var totalPages = Math.ceil(codes.length / perPage);
-    var margin = 0.3;
-    var usableHeight = 6.0 - (margin * 2);
-    var slotHeight = usableHeight / perPage;
-
-    for (var p = 0; p < totalPages; p++) {
-      if (p > 0) doc.addPage([4.0, 6.0], "portrait");
-      var slice = codes.slice(p * perPage, (p + 1) * perPage);
-
-      for (var s = 0; s < slice.length; s++) {
-        var canvas = document.createElement("canvas");
-        try {
-          JsBarcode(canvas, slice[s], {
-            format: "CODE128",
-            width: barWidth,
-            height: barHeight,
-            displayValue: true,
-            font: barFont,
-            fontSize: 15,
-            textMargin: 4,
-            margin: 6,
-            background: "#ffffff"
-          });
-
-          var imgData = canvas.toDataURL("image/png");
-          var aspect = canvas.width / canvas.height;
-          var maxW = 3.5;
-          var maxH = slotHeight * 0.82;
-          var rW = maxW;
-          var rH = rW / aspect;
-          if (rH > maxH) {
-            rH = maxH;
-            rW = rH * aspect;
-          }
-
-          var rX = (4.0 - rW) / 2;
-          var slotTop = margin + (s * slotHeight);
-          var rY = slotTop + (slotHeight - rH) / 2;
-
-          doc.addImage(imgData, "PNG", rX, rY, rW, rH);
-
-          if (showCut && s < slice.length - 1) {
-            var lineY = slotTop + slotHeight;
-            doc.setDrawColor(200, 200, 200);
-            doc.setLineWidth(0.008);
-            doc.setLineDashPattern([0.05, 0.05], 0);
-            doc.line(0.25, lineY, 3.75, lineY);
-            doc.setLineDashPattern([], 0);
-          }
-        } catch (err) {
-          // ignore invalid code
-        }
-      }
-    }
-
-    doc.save("code128-4x6-labels.pdf");
-    statusEl.innerHTML = "<strong>PDF downloaded successfully!</strong> (4x6 format with " + codes.length + " barcodes)";
-  };
-
-  // Direct print
-  printBtn.onclick = function() {
-    pdfBtn.click();
-  };
-
-  // Initialize with sample on load
-  sampleBtn.click();
-})();
-<\/script>`;
-}
-
 /**
- * Returns a complete standalone single HTML file with 100% of the features shown in AI Studio:
- * - Top header with stats pill, Print 4x6, Download 4x6 PDF, and Embed in Blogger modal
- * - 3 Input tabs: Paste List, Generate Series, Upload CSV/TXT
- * - Load Sample from PDF button, Item counter, Copy list, Dedupe, Clear all
- * - 4x6 Label & Barcode Layout configuration:
- *   - Barcodes Per 4x6 Page with 'USER STANDARD: 4' tag
- *   - Barcode Height
- *   - Bar Density (Width Scale)
- *   - Label Text Font
- *   - Checkboxes: human-readable text, dashed cut guides, page numbers
- * - Live 4x6 Label Sheet Preview:
- *   - Green status indicator
- *   - First (<<), Previous (<), Page X / Y, Next (>), Last (>>) navigation
- *   - Zoom controls: (-), 100%, (+)
- *   - Individual barcode hover controls: Copy text and Download PNG
- *   - 4x6 thermal sheet display with cut lines and footer indicator
+ * Returns the complete, self-contained HTML/CSS/JS block that can be directly pasted
+ * into any Blogger Page or Post (using HTML view) or into an HTML/JavaScript Gadget.
  */
-export function getFullStandaloneHtmlDocument(): string {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code 128 Bulk Barcode Generator &amp; 4x6 Thermal Label PDF</title>
-  <meta name="description" content="Complete bulk Code 128 barcode generator tool for standard 4x6 inch thermal labels (max 4 per page). Direct print & PDF export.">
-  
-  <!-- JsBarcode & jsPDF CDNs -->
+export function getFullBloggerSnippet(): string {
+  return `<!-- ==================================================================== -->
+<!-- CODE 128 BULK BARCODE GENERATOR - 4X6 THERMAL LABEL TOOL FOR BLOGGER -->
+<!-- Paste directly into Blogger Page / Post in HTML view (<>) or in a Gadget -->
+<!-- ==================================================================== -->
+
+<div id="b128-tool" class="b128-container">
+  <!-- Load JsBarcode & jsPDF CDNs -->
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
-  
+
   <style>
-    :root {
+    #b128-tool {
       --slate-50: #f8fafc;
       --slate-100: #f1f5f9;
       --slate-200: #e2e8f0;
@@ -356,1203 +52,1096 @@ export function getFullStandaloneHtmlDocument(): string {
       --emerald-100: #d1fae5;
       --emerald-600: #059669;
       --emerald-700: #047857;
-      --amber-50: #fffbeb;
-      --amber-100: #fef3c7;
-      --amber-700: #b45309;
-      --amber-900: #78350f;
       --rose-50: #fff1f2;
       --rose-600: #e11d48;
-    }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--slate-50);
-      color: var(--slate-900);
+      max-width: 1240px;
+      margin: 16px auto;
+      padding: 0 12px;
+      color: var(--slate-800);
+      box-sizing: border-box;
       line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+    }
+    #b128-tool * {
+      box-sizing: border-box;
     }
 
-    /* Header */
-    header {
+    /* Top Bar */
+    #b128-tool .b128-header {
       background: #ffffff;
-      border-bottom: 1px solid var(--slate-200);
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-    .header-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 14px 20px;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
-    .brand-section {
+    #b128-tool .b128-brand {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+    #b128-tool .b128-logo {
       background: var(--slate-900);
       color: #ffffff;
-      display: flex;
+      font-family: monospace;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      letter-spacing: -0.5px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-family: monospace;
-      font-weight: 900;
-      font-size: 13px;
-      letter-spacing: -1px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .brand-title {
+    #b128-tool .b128-title {
       font-size: 18px;
       font-weight: 700;
       color: var(--slate-900);
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      margin: 0;
+      line-height: 1.2;
     }
-    .badge-thermal {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 500;
-      background: var(--emerald-50);
-      color: var(--emerald-700);
-      border: 1px solid #a7f3d0;
-    }
-    .brand-subtitle {
+    #b128-tool .b128-subtitle {
       font-size: 12px;
       color: var(--slate-500);
-      margin-top: 2px;
+      margin: 3px 0 0 0;
     }
-
-    .header-actions {
+    #b128-tool .b128-header-actions {
       display: flex;
+      gap: 8px;
       align-items: center;
-      gap: 10px;
       flex-wrap: wrap;
     }
-    .stats-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      background: var(--slate-100);
-      border: 1px solid var(--slate-200);
-      font-size: 12px;
-      color: var(--slate-700);
-    }
-    .stats-pill strong { color: var(--slate-900); }
 
-    /* Button Styles */
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: all 0.15s ease;
-    }
-    .btn {
+    /* Buttons */
+    #b128-tool .b128-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 14px;
       font-size: 12px;
       font-weight: 600;
+      padding: 8px 14px;
       border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
     }
-    .btn-white {
-      background: #ffffff;
-      color: var(--slate-700);
-      border: 1px solid var(--slate-300);
-    }
-    .btn-white:hover { background: var(--slate-50); }
-    .btn-amber {
-      background: var(--amber-50);
-      color: var(--amber-900);
-      border: 1px solid var(--amber-100);
-    }
-    .btn-amber:hover { background: #fef3c7; }
-    .btn-dark {
+    #b128-tool .b128-btn-dark {
       background: var(--slate-900);
       color: #ffffff;
     }
-    .btn-dark:hover { background: var(--slate-800); }
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    #b128-tool .b128-btn-dark:hover {
+      background: var(--slate-800);
+    }
+    #b128-tool .b128-btn-white {
+      background: #ffffff;
+      color: var(--slate-700);
+      border-color: var(--slate-200);
+    }
+    #b128-tool .b128-btn-white:hover {
+      background: var(--slate-50);
+      color: var(--slate-900);
+    }
+    #b128-tool .b128-btn-blue {
+      background: var(--blue-600);
+      color: #ffffff;
+    }
+    #b128-tool .b128-btn-blue:hover {
+      background: var(--blue-700);
     }
 
-    /* Layout */
-    .main-wrapper {
-      max-width: 1280px;
-      margin: 24px auto;
-      padding: 0 20px;
+    /* Grid Layout */
+    #b128-tool .b128-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 20px;
       align-items: start;
     }
-    @media (max-width: 1024px) {
-      .main-wrapper { grid-template-columns: 1fr; }
+    @media (max-width: 992px) {
+      #b128-tool .b128-layout {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Cards */
-    .card {
+    #b128-tool .b128-card {
       background: #ffffff;
       border: 1px solid var(--slate-200);
       border-radius: 12px;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+    }
+    #b128-tool .b128-card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--slate-100);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #b128-tool .b128-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-800);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #b128-tool .b128-card-body {
+      padding: 16px;
     }
 
-    /* Tabs Bar */
-    .tabs-header {
+    /* Tabs */
+    #b128-tool .b128-tabs {
       display: flex;
       border-bottom: 1px solid var(--slate-200);
       background: #f8fafc;
       padding: 6px 8px 0 8px;
       gap: 4px;
     }
-    .tab-btn {
+    #b128-tool .b128-tab-btn {
       flex: 1;
-      padding: 8px 12px;
+      padding: 8px 10px;
       font-size: 12px;
       font-weight: 600;
       color: var(--slate-600);
       background: transparent;
-      border-radius: 8px 8px 0 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      border-radius: 6px 6px 0 0;
       border: 1px solid transparent;
       border-bottom: none;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
     }
-    .tab-btn:hover { color: var(--slate-900); background: rgba(0,0,0,0.02); }
-    .tab-btn.active {
+    #b128-tool .b128-tab-btn:hover {
+      color: var(--slate-900);
+      background: rgba(0,0,0,0.02);
+    }
+    #b128-tool .b128-tab-btn.active {
       background: #ffffff;
       color: var(--slate-900);
       border-color: var(--slate-200);
-      box-shadow: 0 -2px 4px rgba(0,0,0,0.02);
     }
 
-    .card-body {
-      padding: 16px;
-    }
-
-    /* Inputs */
-    textarea {
+    /* Textarea & Inputs */
+    #b128-tool textarea {
       width: 100%;
-      height: 240px;
+      height: 220px;
       padding: 12px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 12px;
+      font-size: 12.5px;
       line-height: 1.6;
       color: var(--slate-800);
       border: 1px solid var(--slate-200);
       border-radius: 8px;
-      background: rgba(248, 250, 252, 0.5);
+      background: var(--slate-50);
       resize: vertical;
+      box-sizing: border-box;
     }
-    textarea:focus {
+    #b128-tool textarea:focus {
       outline: none;
       border-color: var(--slate-900);
-      box-shadow: 0 0 0 1px var(--slate-900);
       background: #ffffff;
     }
 
-    /* Forms */
-    .form-grid {
+    #b128-tool .b128-input-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--slate-100);
+      font-size: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    #b128-tool .b128-tool-actions {
+      display: flex;
+      gap: 6px;
+    }
+    #b128-tool .b128-tool-btn {
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--slate-600);
+      background: var(--slate-100);
+      border: 1px solid var(--slate-200);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #b128-tool .b128-tool-btn:hover {
+      color: var(--slate-900);
+      background: var(--slate-200);
+    }
+    #b128-tool .b128-tool-btn-red:hover {
+      color: var(--rose-600);
+      background: var(--rose-50);
+      border-color: #fecdd3;
+    }
+
+    /* Form Fields */
+    #b128-tool .b128-form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 12px;
       margin-bottom: 12px;
     }
-    label {
+    #b128-tool label {
       display: block;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--slate-700);
       margin-bottom: 4px;
     }
-    input[type="text"], input[type="number"], select {
+    #b128-tool input[type="text"],
+    #b128-tool input[type="number"],
+    #b128-tool select {
       width: 100%;
-      padding: 7px 10px;
+      padding: 7px 9px;
       font-size: 12px;
       border: 1px solid var(--slate-200);
       border-radius: 6px;
       background: var(--slate-50);
-      color: var(--slate-800);
-      font-family: inherit;
+      color: var(--slate-900);
+      box-sizing: border-box;
     }
-    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    #b128-tool input:focus,
+    #b128-tool select:focus {
       outline: none;
       border-color: var(--slate-900);
-      background: #fff;
+      background: #ffffff;
     }
 
-    /* Toolbar under input */
-    .input-toolbar {
-      margin-top: 12px;
-      padding-top: 12px;
+    #b128-tool .b128-checkbox-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
       border-top: 1px solid var(--slate-100);
+    }
+    #b128-tool .b128-check-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--slate-700);
+      cursor: pointer;
+    }
+    #b128-tool .b128-check-item input {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* Upload Zone */
+    #b128-tool .b128-upload-box {
+      border: 2px dashed var(--slate-300);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      background: var(--slate-50);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #b128-tool .b128-upload-box:hover {
+      border-color: var(--slate-400);
+      background: #ffffff;
+    }
+
+    /* Preview Right Side */
+    #b128-tool .b128-preview-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 8px;
-      font-size: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--slate-200);
+      background: #ffffff;
     }
-    .tool-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .tool-btn {
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--slate-600);
-      background: transparent;
-      border: 1px solid transparent;
+    #b128-tool .b128-pager {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #ffffff;
     }
-    .tool-btn:hover {
+    #b128-tool .b128-pager button {
+      background: #ffffff;
+      border: none;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--slate-700);
+      cursor: pointer;
+      border-right: 1px solid var(--slate-200);
+    }
+    #b128-tool .b128-pager button:last-child {
+      border-right: none;
+    }
+    #b128-tool .b128-pager button:hover:not(:disabled) {
       background: var(--slate-100);
       color: var(--slate-900);
     }
-    .tool-btn-red {
-      color: var(--rose-600);
+    #b128-tool .b128-pager button:disabled {
+      color: var(--slate-300);
+      cursor: not-allowed;
     }
-    .tool-btn-red:hover {
-      background: var(--rose-50);
-      color: var(--rose-600);
-    }
-
-    /* Upload Box */
-    .upload-zone {
-      border: 2px dashed var(--slate-200);
-      border-radius: 12px;
-      padding: 32px 16px;
-      text-align: center;
-      cursor: pointer;
-      background: rgba(248, 250, 252, 0.6);
-      transition: all 0.15s ease;
-    }
-    .upload-zone:hover {
-      border-color: var(--slate-400);
-      background: var(--slate-50);
-    }
-
-    /* Checkbox row */
-    .checkbox-row {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--slate-100);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      font-size: 12px;
-      color: var(--slate-700);
-      font-weight: 500;
-    }
-    .checkbox-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    /* Right Column: Preview */
-    .preview-header {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--slate-200);
-      background: rgba(248, 250, 252, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .preview-title-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .indicator-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #10b981;
-      display: inline-block;
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-    }
-    .preview-title {
-      font-size: 12px;
-      font-weight: 700;
+    #b128-tool .b128-pager span {
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
       color: var(--slate-800);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      background: var(--slate-50);
+      border-right: 1px solid var(--slate-200);
     }
-    .preview-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .pager-group, .zoom-group {
+
+    #b128-tool .b128-zoom {
       display: inline-flex;
       align-items: center;
-      background: #ffffff;
       border: 1px solid var(--slate-200);
-      border-radius: 8px;
-      padding: 2px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #ffffff;
     }
-    .pager-btn, .zoom-btn {
+    #b128-tool .b128-zoom button {
+      background: #ffffff;
+      border: none;
       padding: 4px 8px;
-      background: transparent;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--slate-600);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 24px;
-    }
-    .pager-btn:hover, .zoom-btn:hover { background: var(--slate-100); color: var(--slate-900); }
-    .pager-btn:disabled, .zoom-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .pager-display {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
       color: var(--slate-700);
-      padding: 0 8px;
-      min-width: 60px;
-      text-align: center;
+      cursor: pointer;
+      border-right: 1px solid var(--slate-200);
     }
-
-    /* Preview Stage */
-    .preview-stage {
-      background: #f1f5f9;
-      padding: 32px 16px;
-      min-height: 520px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: auto;
+    #b128-tool .b128-zoom button:last-child {
+      border-right: none;
     }
-    /* 4x6 Label Sheet Container */
-    .sheet-mockup {
-      width: 320px;
-      min-height: 480px;
-      background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
-      padding: 20px 14px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      position: relative;
+    #b128-tool .b128-zoom button:hover {
+      background: var(--slate-100);
     }
-    .barcode-slot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 0;
-    }
-    .barcode-slot.has-divider {
-      border-bottom: 1px dashed var(--slate-300);
-    }
-    .slot-actions {
-      position: absolute;
-      right: 4px;
-      top: 4px;
-      display: flex;
-      gap: 4px;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--slate-200);
-      border-radius: 6px;
-      padding: 2px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      z-index: 5;
-    }
-    .barcode-slot:hover .slot-actions { opacity: 1; }
-    .slot-act-btn {
-      padding: 4px;
-      border-radius: 4px;
-      background: transparent;
-      color: var(--slate-600);
+    #b128-tool .b128-zoom span {
+      padding: 4px 6px;
       font-size: 11px;
-    }
-    .slot-act-btn:hover { background: var(--slate-100); color: var(--slate-900); }
-
-    .sheet-footer {
-      text-align: center;
-      font-size: 10px;
-      color: var(--slate-400);
       font-family: monospace;
-      padding-top: 8px;
-      border-top: 1px solid var(--slate-100);
-    }
-    .stage-caption {
-      margin-top: 16px;
-      font-size: 11px;
-      color: var(--slate-400);
-      font-weight: 500;
-      text-align: center;
+      color: var(--slate-600);
+      border-right: 1px solid var(--slate-200);
     }
 
-    /* Modal for Blogger */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      z-index: 50;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .modal-backdrop.show { display: flex; }
-    .modal-card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      width: 100%;
-      max-width: 720px;
-      max-height: 90vh;
+    /* 4x6 Preview Stage */
+    #b128-tool .b128-stage {
+      background: #e2e8f0;
+      padding: 24px 16px;
+      border-radius: 0 0 12px 12px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       overflow: hidden;
     }
-    .modal-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--slate-200);
-      background: #f8fafc;
+    #b128-tool .b128-sheet-wrapper {
+      transform-origin: top center;
+      transition: transform 0.15s ease-out;
+    }
+    #b128-tool .b128-mockup-4x6 {
+      width: 320px;
+      height: 480px;
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.06);
       display: flex;
+      flex-direction: column;
+      padding: 14px 12px;
+      position: relative;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #b128-tool .b128-slot {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      position: relative;
+      padding: 4px 0;
     }
-    .modal-body {
-      padding: 20px;
-      overflow-y: auto;
-      font-size: 13px;
-      color: var(--slate-700);
+    #b128-tool .b128-slot.has-divider {
+      border-bottom: 1px dashed #cbd5e1;
     }
-    .modal-footer {
-      padding: 14px 20px;
-      border-top: 1px solid var(--slate-200);
-      background: #f8fafc;
+    #b128-tool .b128-slot-actions {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      display: none;
+      gap: 3px;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--slate-200);
+      border-radius: 4px;
+      padding: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      z-index: 10;
+    }
+    #b128-tool .b128-slot:hover .b128-slot-actions {
       display: flex;
-      justify-content: flex-end;
-      gap: 10px;
     }
-    pre {
-      background: var(--slate-900);
-      color: #f8fafc;
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 12px;
+    #b128-tool .b128-act-btn {
+      background: transparent;
+      border: none;
+      padding: 3px 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--slate-600);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+    }
+    #b128-tool .b128-act-btn:hover {
+      background: var(--slate-100);
+      color: var(--slate-900);
+    }
+    #b128-tool .b128-sheet-footer {
+      font-size: 9px;
+      color: var(--slate-400);
+      text-align: center;
+      margin-top: auto;
+      padding-top: 4px;
       font-family: monospace;
-      overflow-x: auto;
-      max-height: 220px;
+      letter-spacing: 0.02em;
     }
 
-    /* Toast */
-    #toast {
+    /* Toast Notification */
+    #b128-toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
       background: var(--slate-900);
       color: #ffffff;
       padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 12px;
+      border-radius: 8px;
+      font-size: 13px;
       font-weight: 500;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 1px solid var(--slate-700);
       display: none;
-      z-index: 100;
+      z-index: 99999;
+      animation: b128Fade 0.2s ease;
+    }
+    @keyframes b128Fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Print Specific Rules */
+    /* Print Styles */
     @media print {
-      @page {
-        size: 4in 6in;
-        margin: 0.15in;
+      body * {
+        visibility: hidden !important;
       }
-      body {
-        background: #ffffff !important;
+      #b128-tool, #b128-tool #b128-sheet-mockup, #b128-tool #b128-sheet-mockup * {
+        visibility: visible !important;
       }
-      header, .no-print, .card, .main-wrapper > div:first-child, .stage-caption {
-        display: none !important;
-      }
-      .main-wrapper {
-        display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      .preview-stage {
-        background: transparent !important;
-        padding: 0 !important;
-      }
-      .sheet-mockup {
-        width: 100% !important;
-        height: 5.7in !important;
+      #b128-tool #b128-sheet-mockup {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 4in !important;
+        height: 6in !important;
         box-shadow: none !important;
         border: none !important;
-        page-break-after: always;
+        margin: 0 !important;
+        padding: 0.25in !important;
       }
-      .slot-actions { display: none !important; }
     }
   </style>
-</head>
-<body>
 
-  <!-- Top Header Navigation -->
-  <header class="no-print">
-    <div class="header-container">
-      <div class="brand-section">
-        <div class="brand-logo">||| 128</div>
-        <div>
-          <div class="brand-title">
-            <span>Code 128 Barcode &amp; 4x6 PDF</span>
-            <span class="badge-thermal">4" &times; 6" Thermal Ready</span>
-          </div>
-          <div class="brand-subtitle">
-            Bulk barcode generator &bull; Max 4 labels per 4x6 page &bull; Blogger ready
-          </div>
-        </div>
-      </div>
-
-      <div class="header-actions">
-        <div id="header-stats" class="stats-pill">
-          <strong id="stat-barcodes">8</strong> Barcodes &bull; <strong id="stat-pages">2</strong> Pages (4x6)
-        </div>
-
-        <button id="btn-blogger-modal" type="button" class="btn btn-amber" title="Get embed code for Blogger">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
-          <span>Embed in Blogger</span>
-        </button>
-
-        <button id="btn-header-print" type="button" class="btn btn-white" title="Print to 4x6 thermal printer">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
-          <span>Print 4x6</span>
-        </button>
-
-        <button id="btn-header-pdf" type="button" class="btn btn-dark" title="Download 4x6 thermal PDF label sheet">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Download 4x6 PDF</span>
-        </button>
+  <!-- HEADER BAR -->
+  <div class="b128-header">
+    <div class="b128-brand">
+      <div class="b128-logo">||| 128</div>
+      <div>
+        <h2 class="b128-title">Code 128 Bulk Barcode Generator</h2>
+        <p class="b128-subtitle">Standard 4x6 Thermal Label PDF &bull; User Max: 4 Barcodes Per Page</p>
       </div>
     </div>
-  </header>
+    <div class="b128-header-actions">
+      <button id="b128-btn-pdf" type="button" class="b128-btn b128-btn-dark">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Download 4x6 PDF</span>
+      </button>
+      <button id="b128-btn-print" type="button" class="b128-btn b128-btn-white">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+        <span>Print (4x6 Thermal)</span>
+      </button>
+    </div>
+  </div>
 
-  <!-- Main 2-Column Content Layout -->
-  <div class="main-wrapper">
-    <!-- LEFT COLUMN: Inputs & Label Settings -->
-    <div class="no-print">
-      <!-- Card 1: Barcode Input with 3 Tabs -->
-      <div class="card">
-        <div class="tabs-header">
-          <button id="tab-btn-bulk" class="tab-btn active" onclick="switchTab('bulk')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            <span>Paste List</span>
+  <!-- MAIN 2-COLUMN LAYOUT -->
+  <div class="b128-layout">
+    <!-- LEFT: INPUTS & CONFIG -->
+    <div>
+      <!-- CARD 1: INPUT MODES -->
+      <div class="b128-card">
+        <div class="b128-tabs">
+          <button id="b128-tab-bulk-btn" type="button" class="b128-tab-btn active" onclick="b128SwitchTab('bulk')">
+            Bulk Input / Paste
           </button>
-          <button id="tab-btn-seq" class="tab-btn" onclick="switchTab('seq')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="4" height="6" x="2" y="5" rx="1"/><rect width="4" height="6" x="10" y="5" rx="1"/><rect width="4" height="6" x="18" y="5" rx="1"/><path d="M14 19v-4"/><path d="M6 19v-4"/><path d="M18 19v-4"/></svg>
-            <span>Generate Series</span>
+          <button id="b128-tab-seq-btn" type="button" class="b128-tab-btn" onclick="b128SwitchTab('seq')">
+            Generate Series
           </button>
-          <button id="tab-btn-upload" class="tab-btn" onclick="switchTab('upload')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <span>Upload CSV/TXT</span>
+          <button id="b128-tab-upload-btn" type="button" class="b128-tab-btn" onclick="b128SwitchTab('upload')">
+            Upload CSV / TXT
           </button>
         </div>
 
-        <div class="card-body">
-          <!-- TAB 1: PASTE LIST -->
-          <div id="panel-bulk">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <label style="margin-bottom: 0;">Barcode Values (One per line or comma/tab separated)</label>
-              <button id="btn-load-sample" type="button" style="background: none; border: none; color: var(--blue-600); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+        <div class="b128-card-body">
+          <!-- TAB 1: PASTE BULK -->
+          <div id="b128-panel-bulk">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="margin-bottom: 0;">Barcode Values (One per line or comma/tab separated):</label>
+              <button id="b128-btn-sample" type="button" style="background: none; border: none; color: var(--blue-600); font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
                 <span>Load Sample from PDF</span>
               </button>
             </div>
-
-            <textarea id="barcode-input" placeholder="Paste barcodes here, for example:&#10;FMPP4162047741&#10;FMPC6265465305&#10;FMPP4161144943&#10;FMPP4110839820&#10;FMPC6277475378&#10;FMPP4162047749"></textarea>
-
-            <!-- Bottom Toolbar: Counter, Copy, Dedupe, Clear -->
-            <div class="input-toolbar">
-              <div id="items-counter" style="color: var(--slate-500); font-weight: 500;">
-                <strong id="counter-num" style="color: var(--slate-900);">8</strong> items loaded
+            <textarea id="b128-input" placeholder="Paste barcodes here, for example:&#10;FMPP4162047741&#10;FMPC6265465305&#10;FMPP4161144943&#10;FMPP4110839820&#10;FMPC6277475378&#10;FMPP4162047749"></textarea>
+            
+            <div class="b128-input-toolbar">
+              <div id="b128-counter-text" style="color: var(--slate-600); font-weight: 500;">
+                <strong id="b128-count-num" style="color: var(--slate-900);">8</strong> barcodes loaded
               </div>
-              <div class="tool-actions">
-                <button id="btn-copy-list" type="button" class="tool-btn" title="Copy list to clipboard">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                  <span>Copy</span>
-                </button>
-                <button id="btn-dedupe" type="button" class="tool-btn" title="Remove duplicate codes">
-                  <span>Dedupe</span>
-                </button>
-                <button id="btn-clear" type="button" class="tool-btn tool-btn-red" title="Clear all codes">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                  <span>Clear</span>
-                </button>
+              <div class="b128-tool-actions">
+                <button id="b128-btn-copy-list" type="button" class="b128-tool-btn" title="Copy all to clipboard">Copy List</button>
+                <button id="b128-btn-dedupe" type="button" class="b128-tool-btn" title="Remove duplicate codes">Dedupe</button>
+                <button id="b128-btn-clear" type="button" class="b128-tool-btn b128-tool-btn-red" title="Clear all codes">Clear</button>
               </div>
             </div>
           </div>
 
-          <!-- TAB 2: GENERATE SERIES -->
-          <div id="panel-seq" style="display: none;">
-            <div style="background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #1e3a8a; margin-bottom: 14px;">
-              Instantly create batches of serialized Code 128 barcodes (e.g. inventory tags, shipping labels, product serials).
+          <!-- TAB 2: SERIES GENERATOR -->
+          <div id="b128-panel-seq" style="display: none;">
+            <div style="background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: 6px; padding: 8px 10px; font-size: 11.5px; color: #1e3a8a; margin-bottom: 12px;">
+              Create consecutive serial numbers or inventory tags instantly.
             </div>
-            <div class="form-grid">
+            <div class="b128-form-grid">
               <div>
-                <label>Prefix (Optional):</label>
-                <input type="text" id="seq-prefix" value="FMPP">
+                <label>Prefix:</label>
+                <input type="text" id="b128-seq-prefix" value="FMPP">
               </div>
               <div>
-                <label>Suffix (Optional):</label>
-                <input type="text" id="seq-suffix" placeholder="-US">
+                <label>Suffix:</label>
+                <input type="text" id="b128-seq-suffix" placeholder="-US">
               </div>
               <div>
                 <label>Start Number:</label>
-                <input type="number" id="seq-start" value="4162047741">
+                <input type="number" id="b128-seq-start" value="4162047741">
               </div>
               <div>
-                <label>Count to Generate:</label>
-                <input type="number" id="seq-count" value="12" min="1" max="500">
+                <label>Count:</label>
+                <input type="number" id="b128-seq-count" value="12" min="1" max="500">
               </div>
               <div>
-                <label>Pad Length (Digits):</label>
-                <input type="number" id="seq-pad" value="10">
+                <label>Pad Digits:</label>
+                <input type="number" id="b128-seq-pad" value="10">
               </div>
               <div>
                 <label>Step Increment:</label>
-                <input type="number" id="seq-step" value="1">
+                <input type="number" id="b128-seq-step" value="1">
               </div>
             </div>
-            <button id="btn-gen-seq" type="button" class="btn btn-dark" style="width: 100%; justify-content: center; padding: 10px;">
+            <button id="b128-btn-generate-seq" type="button" class="b128-btn b128-btn-dark" style="width: 100%; justify-content: center;">
               Generate Sequential Barcodes
             </button>
           </div>
 
-          <!-- TAB 3: UPLOAD CSV/TXT -->
-          <div id="panel-upload" style="display: none;">
-            <input type="file" id="file-input" accept=".csv,.txt" style="display: none;">
-            <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-              <svg style="margin: 0 auto 8px auto; display: block; color: var(--slate-400);" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>
-              <div style="font-size: 13px; font-weight: 600; color: var(--slate-800);">
-                Click or drag &amp; drop to upload CSV or TXT
-              </div>
-              <div style="font-size: 11px; color: var(--slate-500); margin-top: 4px;">
-                Plain text or comma/newline separated barcode items
-              </div>
-            </div>
-            <div style="font-size: 11px; color: var(--slate-500); margin-top: 10px;">
-              Supported formats: Standard text files (.txt) or comma-delimited files (.csv) exported from Excel or Google Sheets.
+          <!-- TAB 3: CSV/TXT UPLOAD -->
+          <div id="b128-panel-upload" style="display: none;">
+            <input type="file" id="b128-file-input" accept=".csv,.txt" style="display: none;">
+            <div class="b128-upload-box" onclick="document.getElementById('b128-file-input').click()">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 6px auto; display: block; color: var(--slate-400);"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>
+              <div style="font-size: 13px; font-weight: 600; color: var(--slate-800);">Click or drop CSV / TXT file here</div>
+              <div style="font-size: 11px; color: var(--slate-500); margin-top: 2px;">Accepts Excel exports or text files</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Card 2: 4X6 LABEL & BARCODE LAYOUT -->
-      <div class="card">
-        <div style="padding: 14px 16px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-            <span style="font-size: 12px; font-weight: 700; color: var(--slate-800); text-transform: uppercase; letter-spacing: 0.05em;">
-              4x6 Label &amp; Barcode Layout
-            </span>
-          </div>
-          <span style="font-size: 11px; font-weight: 500; color: var(--slate-500);">
-            Standard 4" &times; 6" Page
-          </span>
+      <!-- CARD 2: 4X6 LAYOUT SETTINGS -->
+      <div class="b128-card">
+        <div class="b128-card-header">
+          <h3 class="b128-card-title">4x6 Label &amp; Barcode Layout</h3>
+          <span style="font-size: 11px; color: var(--slate-500); font-weight: 500;">4" &times; 6" Page</span>
         </div>
-
-        <div class="card-body">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px;">
-            <!-- Barcodes Per 4x6 Page -->
+        <div class="b128-card-body">
+          <div class="b128-form-grid">
             <div>
-              <label style="display: flex; justify-content: space-between; align-items: center;">
-                <span>Barcodes Per 4x6 Page</span>
-                <span style="font-size: 10px; color: var(--blue-600); font-weight: 700;">USER STANDARD: 4</span>
+              <label style="display: flex; justify-content: space-between;">
+                <span>Barcodes Per Page</span>
+                <span style="color: var(--blue-600); font-weight: 700;">USER: 4</span>
               </label>
-              <select id="cfg-per-page">
+              <select id="b128-cfg-per-page">
                 <option value="4" selected>4 Barcodes (Standard &bull; Max 4)</option>
                 <option value="3">3 Barcodes (Spacious)</option>
                 <option value="2">2 Barcodes (Large)</option>
-                <option value="1">1 Barcode (Extra Large Single)</option>
+                <option value="1">1 Barcode (Single Full)</option>
                 <option value="5">5 Barcodes (Compact)</option>
               </select>
             </div>
-
-            <!-- Barcode Height -->
             <div>
               <label>Barcode Height</label>
-              <select id="cfg-height">
+              <select id="b128-cfg-height">
                 <option value="42">Compact (42px)</option>
                 <option value="55" selected>Standard (55px &bull; Recommended)</option>
                 <option value="68">Tall (68px)</option>
                 <option value="80">Extra Tall (80px)</option>
               </select>
             </div>
-
-            <!-- Bar Density (Width Scale) -->
             <div>
-              <label>Bar Density (Width Scale)</label>
-              <select id="cfg-density">
+              <label>Bar Density (Scale)</label>
+              <select id="b128-cfg-density">
                 <option value="1.5">Fine / Compact (1.5x)</option>
                 <option value="2.0" selected>Standard Crisp (2.0x &bull; High Scan)</option>
                 <option value="2.5">Bold / Wide (2.5x)</option>
               </select>
             </div>
-
-            <!-- Label Text Font -->
             <div>
-              <label>Label Text Font</label>
-              <select id="cfg-font">
-                <option value="monospace" selected>Monospace (OCR Style, like PDF sample)</option>
+              <label>Text Font</label>
+              <select id="b128-cfg-font">
+                <option value="monospace" selected>Monospace (OCR Style)</option>
                 <option value="sans-serif">Clean Sans-Serif</option>
               </select>
             </div>
           </div>
 
-          <!-- Toggles Row -->
-          <div class="checkbox-row">
-            <label class="checkbox-label">
-              <input type="checkbox" id="cfg-show-text" checked>
+          <div class="b128-checkbox-row">
+            <label class="b128-check-item">
+              <input type="checkbox" id="b128-cfg-text" checked>
               <span>Show human-readable text under barcode</span>
             </label>
-            <label class="checkbox-label">
-              <input type="checkbox" id="cfg-cut-lines" checked>
-              <span>&#9986; Show dashed cut guides between labels</span>
+            <label class="b128-check-item">
+              <input type="checkbox" id="b128-cfg-cutlines" checked>
+              <span>Show dashed cut guides between labels</span>
             </label>
-            <label class="checkbox-label">
-              <input type="checkbox" id="cfg-page-numbers" checked>
-              <span>Show page numbers (Page X of Y)</span>
+            <label class="b128-check-item">
+              <input type="checkbox" id="b128-cfg-pagenums" checked>
+              <span>Show page number in sheet footer</span>
             </label>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: LIVE 4X6 LABEL SHEET PREVIEW -->
+    <!-- RIGHT: LIVE 4X6 LABEL SHEET PREVIEW -->
     <div>
-      <div class="card">
-        <!-- Preview Header with Indicators and Pager -->
-        <div class="preview-header">
-          <div class="preview-title-group">
-            <span class="indicator-dot"></span>
-            <span class="preview-title">Live 4x6 Label Sheet Preview</span>
+      <div class="b128-card" style="margin-bottom: 0;">
+        <div class="b128-preview-bar">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <strong style="font-size: 13px; color: var(--slate-900);">Live 4x6 Label Sheet Preview</strong>
           </div>
 
-          <div class="preview-controls">
-            <!-- Pager: First, Prev, Indicator, Next, Last -->
-            <div class="pager-group">
-              <button id="pager-first" class="pager-btn" title="First Page">&laquo;</button>
-              <button id="pager-prev" class="pager-btn" title="Previous Page">&lsaquo;</button>
-              <span id="pager-text" class="pager-display">1 / 2</span>
-              <button id="pager-next" class="pager-btn" title="Next Page">&rsaquo;</button>
-              <button id="pager-last" class="pager-btn" title="Last Page">&raquo;</button>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <!-- Pager -->
+            <div class="b128-pager">
+              <button id="b128-p-first" type="button" title="First Page">&laquo;</button>
+              <button id="b128-p-prev" type="button" title="Previous Page">&lsaquo;</button>
+              <span id="b128-p-num">1 / 2</span>
+              <button id="b128-p-next" type="button" title="Next Page">&rsaquo;</button>
+              <button id="b128-p-last" type="button" title="Last Page">&raquo;</button>
             </div>
 
-            <!-- Zoom Controls -->
-            <div class="zoom-group">
-              <button id="zoom-out" class="zoom-btn" title="Zoom Out">&minus;</button>
-              <span id="zoom-text" style="font-size: 11px; font-family: monospace; padding: 0 4px; color: var(--slate-600);">100%</span>
-              <button id="zoom-in" class="zoom-btn" title="Zoom In">&plus;</button>
-              <button id="zoom-reset" class="zoom-btn" title="Reset to 100%" style="font-size: 10px;">100%</button>
+            <!-- Zoom -->
+            <div class="b128-zoom">
+              <button id="b128-z-out" type="button" title="Zoom Out">&minus;</button>
+              <span id="b128-z-text">100%</span>
+              <button id="b128-z-in" type="button" title="Zoom In">&plus;</button>
+              <button id="b128-z-reset" type="button" title="Reset Zoom" style="font-size: 10px;">Reset</button>
             </div>
           </div>
         </div>
 
-        <!-- 4x6 Label Stage -->
-        <div class="preview-stage">
-          <div id="zoom-wrapper" style="transform: scale(1); transform-origin: top center; transition: transform 0.15s ease-out;">
-            <div id="sheet-mockup" class="sheet-mockup">
-              <!-- Barcode items render here -->
+        <div class="b128-stage">
+          <div id="b128-zoom-box" class="b128-sheet-wrapper">
+            <div id="b128-sheet-mockup" class="b128-mockup-4x6">
+              <!-- Barcodes render here dynamically -->
             </div>
           </div>
-          <div class="stage-caption">
-            Standard 4" &times; 6" Label Dimension (Thermal 203/300 DPI compatible)
+          <div style="font-size: 11px; color: var(--slate-500); margin-top: 10px;">
+            Standard 4" &times; 6" Thermal Label Sheet &bull; Ready for Zebra, Rollo, Dymo, Brother
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Blogger Embed Modal -->
-  <div id="blogger-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="background: var(--amber-700); color: #fff; width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;">B</div>
-          <strong style="font-size: 15px; color: var(--slate-900);">Integrate into Blogger (Blogspot) Website</strong>
-        </div>
-        <button type="button" onclick="closeBloggerModal()" style="background: transparent; color: var(--slate-400); font-size: 18px; font-weight: bold;">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p style="margin-bottom: 12px; font-size: 13px; color: var(--slate-600);">
-          Copy the ready-to-paste snippet below and add it to your Blogger blog via <strong>Layout &rarr; Add a Gadget &rarr; HTML/JavaScript</strong>.
-        </p>
-        <pre><code id="blogger-code-snippet"></code></pre>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-white" onclick="closeBloggerModal()">Close</button>
-        <button id="btn-copy-snippet" type="button" class="btn btn-dark">Copy Snippet</button>
-      </div>
-    </div>
-  </div>
+  <div id="b128-toast"></div>
+</div>
 
-  <!-- Toast Element -->
-  <div id="toast">Notification message</div>
+<!-- ==================================================================== -->
+<!-- APPLICATION LOGIC: JSBARCODE + JSPDF RESILIENT INITIALIZER -->
+<!-- ==================================================================== -->
+<script>
+(function() {
+  var sampleData = [
+    'FMPP4162047741',
+    'FMPC6265465305',
+    'FMPP4161144943',
+    'FMPP4110839820',
+    'FMPC6277475378',
+    'FMPP4162047749',
+    'FMPC6265465312',
+    'FMPP4161144955'
+  ];
 
-  <script>
-    var sampleData = [
-      "FMPP4162047741",
-      "FMPC6265465305",
-      "FMPP4161144943",
-      "FMPP4110839820",
-      "FMPC6277475378",
-      "FMPP4162047749",
-      "FMPC6265465312",
-      "FMPP4161144955"
-    ];
+  var currentPage = 1;
+  var currentZoom = 1.0;
 
-    var currentPage = 1;
-    var currentZoom = 1.0;
+  var inputEl = document.getElementById('b128-input');
+  var countNumEl = document.getElementById('b128-count-num');
+  var perPageEl = document.getElementById('b128-cfg-per-page');
+  var heightEl = document.getElementById('b128-cfg-height');
+  var densityEl = document.getElementById('b128-cfg-density');
+  var fontEl = document.getElementById('b128-cfg-font');
+  var textEl = document.getElementById('b128-cfg-text');
+  var cutlinesEl = document.getElementById('b128-cfg-cutlines');
+  var pagenumsEl = document.getElementById('b128-cfg-pagenums');
 
-    var inputEl = document.getElementById("barcode-input");
-    var counterNumEl = document.getElementById("counter-num");
-    var statBarcodesEl = document.getElementById("stat-barcodes");
-    var statPagesEl = document.getElementById("stat-pages");
+  var sheetMockup = document.getElementById('b128-sheet-mockup');
+  var pNumEl = document.getElementById('b128-p-num');
+  var pFirst = document.getElementById('b128-p-first');
+  var pPrev = document.getElementById('b128-p-prev');
+  var pNext = document.getElementById('b128-p-next');
+  var pLast = document.getElementById('b128-p-last');
 
-    var perPageEl = document.getElementById("cfg-per-page");
-    var heightEl = document.getElementById("cfg-height");
-    var densityEl = document.getElementById("cfg-density");
-    var fontEl = document.getElementById("cfg-font");
-    var showTextEl = document.getElementById("cfg-show-text");
-    var cutLinesEl = document.getElementById("cfg-cut-lines");
-    var pageNumbersEl = document.getElementById("cfg-page-numbers");
+  var zoomBox = document.getElementById('b128-zoom-box');
+  var zoomText = document.getElementById('b128-z-text');
 
-    var sheetMockup = document.getElementById("sheet-mockup");
-    var pagerText = document.getElementById("pager-text");
-    var pagerFirst = document.getElementById("pager-first");
-    var pagerPrev = document.getElementById("pager-prev");
-    var pagerNext = document.getElementById("pager-next");
-    var pagerLast = document.getElementById("pager-last");
+  function showToast(msg) {
+    var t = document.getElementById('b128-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(function() { t.style.display = 'none'; }, 2200);
+  }
 
-    var zoomWrapper = document.getElementById("zoom-wrapper");
-    var zoomText = document.getElementById("zoom-text");
+  window.b128SwitchTab = function(tab) {
+    document.getElementById('b128-tab-bulk-btn').className = tab === 'bulk' ? 'b128-tab-btn active' : 'b128-tab-btn';
+    document.getElementById('b128-tab-seq-btn').className = tab === 'seq' ? 'b128-tab-btn active' : 'b128-tab-btn';
+    document.getElementById('b128-tab-upload-btn').className = tab === 'upload' ? 'b128-tab-btn active' : 'b128-tab-btn';
 
-    function showToast(msg) {
-      var t = document.getElementById("toast");
-      t.textContent = msg;
-      t.style.display = "block";
-      setTimeout(function() { t.style.display = "none"; }, 2500);
+    document.getElementById('b128-panel-bulk').style.display = tab === 'bulk' ? 'block' : 'none';
+    document.getElementById('b128-panel-seq').style.display = tab === 'seq' ? 'block' : 'none';
+    document.getElementById('b128-panel-upload').style.display = tab === 'upload' ? 'block' : 'none';
+  };
+
+  function getBarcodes() {
+    var raw = inputEl ? inputEl.value : '';
+    if (!raw) return [];
+    var parts = raw.split(/[\\r\\n,]+/);
+    var list = [];
+    for (var i = 0; i < parts.length; i++) {
+      var item = parts[i].trim();
+      if (item.length > 0) list.push(item);
     }
+    return list;
+  }
 
-    function switchTab(tab) {
-      document.getElementById("tab-btn-bulk").className = tab === 'bulk' ? 'tab-btn active' : 'tab-btn';
-      document.getElementById("tab-btn-seq").className = tab === 'seq' ? 'tab-btn active' : 'tab-btn';
-      document.getElementById("tab-btn-upload").className = tab === 'upload' ? 'tab-btn active' : 'tab-btn';
-
-      document.getElementById("panel-bulk").style.display = tab === 'bulk' ? 'block' : 'none';
-      document.getElementById("panel-seq").style.display = tab === 'seq' ? 'block' : 'none';
-      document.getElementById("panel-upload").style.display = tab === 'upload' ? 'block' : 'none';
+  function ensureJsBarcode(callback) {
+    if (typeof JsBarcode === 'function') {
+      callback();
+      return;
     }
-
-    function getBarcodes() {
-      var raw = inputEl.value || "";
-      return raw.split(/[\\r\\n,]+/).map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; });
-    }
-
-    function renderPreview() {
-      var codes = getBarcodes();
-      var perPage = parseInt(perPageEl.value, 10) || 4;
-      var totalPages = Math.max(1, Math.ceil(codes.length / perPage));
-
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
-
-      counterNumEl.textContent = codes.length;
-      statBarcodesEl.textContent = codes.length;
-      statPagesEl.textContent = totalPages;
-
-      pagerText.textContent = currentPage + " / " + totalPages;
-      pagerFirst.disabled = currentPage <= 1;
-      pagerPrev.disabled = currentPage <= 1;
-      pagerNext.disabled = currentPage >= totalPages;
-      pagerLast.disabled = currentPage >= totalPages;
-
-      sheetMockup.innerHTML = "";
-
-      if (codes.length === 0) {
-        sheetMockup.innerHTML = '<div style="color: var(--slate-400); font-size: 13px; text-align: center; margin: auto;">No barcodes to display. Paste values or load sample.</div>';
-        return;
+    var checkTimer = setInterval(function() {
+      if (typeof JsBarcode === 'function') {
+        clearInterval(checkTimer);
+        callback();
       }
+    }, 100);
 
-      var startIndex = (currentPage - 1) * perPage;
-      var pageCodes = codes.slice(startIndex, startIndex + perPage);
+    // After 3 seconds, inject fallback if still not loaded
+    setTimeout(function() {
+      if (typeof JsBarcode !== 'function') {
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js';
+        s.onload = function() {
+          clearInterval(checkTimer);
+          callback();
+        };
+        document.head.appendChild(s);
+      }
+    }, 1500);
+  }
 
-      var bHeight = parseInt(heightEl.value, 10) || 55;
-      var bWidth = parseFloat(densityEl.value) || 2.0;
-      var bFont = fontEl.value;
-      var bShowText = showTextEl.checked;
-      var bCutLines = cutLinesEl.checked;
-      var bPageNumbers = pageNumbersEl.checked;
+  function renderPreview() {
+    var codes = getBarcodes();
+    var perPage = parseInt(perPageEl.value, 10) || 4;
+    var totalPages = Math.max(1, Math.ceil(codes.length / perPage));
 
-      for (var i = 0; i < pageCodes.length; i++) {
-        (function(codeVal, idx) {
-          var slot = document.createElement("div");
-          slot.className = "barcode-slot" + (bCutLines && idx < pageCodes.length - 1 ? " has-divider" : "");
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
 
-          // Hover quick actions (Copy & Download PNG)
-          var actDiv = document.createElement("div");
-          actDiv.className = "slot-actions";
+    countNumEl.textContent = codes.length;
+    pNumEl.textContent = currentPage + ' / ' + totalPages;
 
-          var copyBtn = document.createElement("button");
-          copyBtn.type = "button";
-          copyBtn.className = "slot-act-btn";
-          copyBtn.title = "Copy barcode text";
-          copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
-          copyBtn.onclick = function(e) {
-            e.stopPropagation();
-            navigator.clipboard.writeText(codeVal);
-            showToast("Copied " + codeVal + " to clipboard");
-          };
+    pFirst.disabled = currentPage <= 1;
+    pPrev.disabled = currentPage <= 1;
+    pNext.disabled = currentPage >= totalPages;
+    pLast.disabled = currentPage >= totalPages;
 
-          var dlBtn = document.createElement("button");
-          dlBtn.type = "button";
-          dlBtn.className = "slot-act-btn";
-          dlBtn.title = "Download PNG";
-          dlBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-          dlBtn.onclick = function(e) {
-            e.stopPropagation();
-            downloadSinglePNG(codeVal);
-          };
+    sheetMockup.innerHTML = '';
 
-          actDiv.appendChild(copyBtn);
-          actDiv.appendChild(dlBtn);
-          slot.appendChild(actDiv);
+    if (codes.length === 0) {
+      sheetMockup.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; margin: auto; padding: 20px;">No barcodes entered.<br>Paste values above or click &quot;Load Sample from PDF&quot;.</div>';
+      return;
+    }
 
-          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-          svg.style.maxWidth = "100%";
-          svg.style.height = "auto";
-          slot.appendChild(svg);
-          sheetMockup.appendChild(slot);
+    var startIndex = (currentPage - 1) * perPage;
+    var pageCodes = codes.slice(startIndex, startIndex + perPage);
 
-          try {
+    var bHeight = parseInt(heightEl.value, 10) || 55;
+    var bWidth = parseFloat(densityEl.value) || 2.0;
+    var bFont = fontEl.value;
+    var bShowText = textEl.checked;
+    var bCutLines = cutlinesEl.checked;
+    var bPageNumbers = pagenumsEl.checked;
+
+    for (var i = 0; i < pageCodes.length; i++) {
+      (function(codeVal, idx) {
+        var slot = document.createElement('div');
+        slot.className = 'b128-slot' + (bCutLines && idx < pageCodes.length - 1 ? ' has-divider' : '');
+
+        // Slot action buttons (Copy & PNG)
+        var actBox = document.createElement('div');
+        actBox.className = 'b128-slot-actions';
+
+        var copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'b128-act-btn';
+        copyBtn.title = 'Copy code: ' + codeVal;
+        copyBtn.textContent = 'Copy';
+        copyBtn.onclick = function(e) {
+          e.stopPropagation();
+          navigator.clipboard.writeText(codeVal);
+          showToast('Copied: ' + codeVal);
+        };
+
+        var pngBtn = document.createElement('button');
+        pngBtn.type = 'button';
+        pngBtn.className = 'b128-act-btn';
+        pngBtn.title = 'Download single barcode PNG';
+        pngBtn.textContent = 'PNG';
+        pngBtn.onclick = function(e) {
+          e.stopPropagation();
+          downloadSingleBarcodePNG(codeVal);
+        };
+
+        actBox.appendChild(copyBtn);
+        actBox.appendChild(pngBtn);
+        slot.appendChild(actBox);
+
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.style.maxWidth = '96%';
+        svg.style.height = 'auto';
+        slot.appendChild(svg);
+        sheetMockup.appendChild(slot);
+
+        try {
+          if (typeof JsBarcode === 'function') {
             JsBarcode(svg, codeVal, {
-              format: "CODE128",
+              format: 'CODE128',
               width: bWidth,
               height: bHeight,
               displayValue: bShowText,
               font: bFont,
               fontSize: 14,
-              textMargin: 4,
+              textMargin: 3,
               margin: 2
             });
-          } catch (err) {
-            slot.innerHTML = '<span style="color: var(--rose-600); font-size: 11px;">Invalid Code 128: ' + codeVal + '</span>';
+          } else {
+            svg.innerHTML = '<text x="10" y="20" fill="#dc2626" font-size="11">Loading JsBarcode...</text>';
           }
-        })(pageCodes[i], i);
-      }
-
-      if (bPageNumbers) {
-        var foot = document.createElement("div");
-        foot.className = "sheet-footer";
-        foot.textContent = "Page " + currentPage + " of " + totalPages + " • 4\" \u00D7 6\" Thermal Label";
-        sheetMockup.appendChild(foot);
-      }
-    }
-
-    function downloadSinglePNG(val) {
-      var canvas = document.createElement("canvas");
-      try {
-        JsBarcode(canvas, val, {
-          format: "CODE128",
-          width: parseFloat(densityEl.value) || 2.0,
-          height: parseInt(heightEl.value, 10) || 55,
-          displayValue: showTextEl.checked,
-          font: fontEl.value,
-          fontSize: 16,
-          textMargin: 4,
-          margin: 10,
-          background: "#ffffff"
-        });
-        var a = document.createElement("a");
-        a.href = canvas.toDataURL("image/png");
-        a.download = "barcode-" + val + ".png";
-        a.click();
-        showToast("Downloaded barcode-" + val + ".png");
-      } catch (e) {
-        alert("Failed to render barcode PNG");
-      }
-    }
-
-    // Sequence Generator
-    document.getElementById("btn-gen-seq").onclick = function() {
-      var prefix = document.getElementById("seq-prefix").value || "";
-      var suffix = document.getElementById("seq-suffix").value || "";
-      var start = parseInt(document.getElementById("seq-start").value, 10) || 0;
-      var count = parseInt(document.getElementById("seq-count").value, 10) || 12;
-      var pad = parseInt(document.getElementById("seq-pad").value, 10) || 0;
-      var step = parseInt(document.getElementById("seq-step").value, 10) || 1;
-
-      var res = [];
-      for (var i = 0; i < count; i++) {
-        var num = String(start + (i * step));
-        if (pad > 0) while (num.length < pad) num = "0" + num;
-        res.push(prefix + num + suffix);
-      }
-      inputEl.value = res.join("\\n");
-      switchTab("bulk");
-      currentPage = 1;
-      renderPreview();
-      showToast("Generated " + count + " sequential barcodes");
-    };
-
-    // CSV/TXT File Upload
-    document.getElementById("file-input").onchange = function(e) {
-      var file = e.target.files && e.target.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function(evt) {
-        var txt = evt.target.result;
-        inputEl.value = txt;
-        switchTab("bulk");
-        currentPage = 1;
-        renderPreview();
-        showToast("Loaded file: " + file.name);
-      };
-      reader.readAsText(file);
-      e.target.value = "";
-    };
-
-    // Dedupe
-    document.getElementById("btn-dedupe").onclick = function() {
-      var codes = getBarcodes();
-      var seen = {};
-      var unique = [];
-      for (var i = 0; i < codes.length; i++) {
-        if (!seen[codes[i]]) {
-          seen[codes[i]] = true;
-          unique.push(codes[i]);
+        } catch (err) {
+          slot.innerHTML = '<span style="color: #e11d48; font-size: 11px;">Invalid Code 128: ' + codeVal + '</span>';
         }
+      })(pageCodes[i], i);
+    }
+
+    if (bPageNumbers) {
+      var footer = document.createElement('div');
+      footer.className = 'b128-sheet-footer';
+      footer.textContent = 'Page ' + currentPage + ' of ' + totalPages + ' \u2022 4" \u00D7 6" Thermal Label';
+      sheetMockup.appendChild(footer);
+    }
+  }
+
+  function downloadSingleBarcodePNG(val) {
+    var canvas = document.createElement('canvas');
+    try {
+      JsBarcode(canvas, val, {
+        format: 'CODE128',
+        width: parseFloat(densityEl.value) || 2.0,
+        height: parseInt(heightEl.value, 10) || 55,
+        displayValue: textEl.checked,
+        font: fontEl.value,
+        fontSize: 15,
+        textMargin: 4,
+        margin: 8,
+        background: '#ffffff'
+      });
+      var a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = 'barcode-' + val + '.png';
+      a.click();
+      showToast('Downloaded barcode-' + val + '.png');
+    } catch (e) {
+      alert('Could not render PNG for: ' + val);
+    }
+  }
+
+  // Load Sample
+  document.getElementById('b128-btn-sample').onclick = function() {
+    inputEl.value = sampleData.join('\\n');
+    currentPage = 1;
+    renderPreview();
+    showToast('Loaded 8 sample barcodes from PDF');
+  };
+
+  // Copy List
+  document.getElementById('b128-btn-copy-list').onclick = function() {
+    var codes = getBarcodes();
+    if (codes.length === 0) return;
+    navigator.clipboard.writeText(codes.join('\\n'));
+    showToast('Copied ' + codes.length + ' barcodes');
+  };
+
+  // Dedupe
+  document.getElementById('b128-btn-dedupe').onclick = function() {
+    var codes = getBarcodes();
+    var seen = {};
+    var unique = [];
+    for (var i = 0; i < codes.length; i++) {
+      if (!seen[codes[i]]) {
+        seen[codes[i]] = true;
+        unique.push(codes[i]);
       }
-      inputEl.value = unique.join("\\n");
-      renderPreview();
-      showToast("Duplicates removed");
-    };
+    }
+    inputEl.value = unique.join('\\n');
+    renderPreview();
+    showToast('Removed duplicates (' + unique.length + ' remain)');
+  };
 
-    // Clear All
-    document.getElementById("btn-clear").onclick = function() {
-      inputEl.value = "";
-      renderPreview();
-      showToast("Cleared list");
-    };
+  // Clear
+  document.getElementById('b128-btn-clear').onclick = function() {
+    inputEl.value = '';
+    renderPreview();
+    showToast('Cleared all barcodes');
+  };
 
-    // Copy List
-    document.getElementById("btn-copy-list").onclick = function() {
-      var codes = getBarcodes();
-      if (codes.length === 0) return;
-      navigator.clipboard.writeText(codes.join("\\n"));
-      showToast("Copied " + codes.length + " barcodes to clipboard");
-    };
+  // Series Generator
+  document.getElementById('b128-btn-generate-seq').onclick = function() {
+    var prefix = document.getElementById('b128-seq-prefix').value || '';
+    var suffix = document.getElementById('b128-seq-suffix').value || '';
+    var start = parseInt(document.getElementById('b128-seq-start').value, 10) || 0;
+    var count = parseInt(document.getElementById('b128-seq-count').value, 10) || 12;
+    var pad = parseInt(document.getElementById('b128-seq-pad').value, 10) || 0;
+    var step = parseInt(document.getElementById('b128-seq-step').value, 10) || 1;
 
-    // Load Sample from PDF
-    document.getElementById("btn-load-sample").onclick = function() {
-      inputEl.value = sampleData.join("\\n");
+    var list = [];
+    for (var i = 0; i < count; i++) {
+      var numStr = String(start + (i * step));
+      if (pad > 0) {
+        while (numStr.length < pad) numStr = '0' + numStr;
+      }
+      list.push(prefix + numStr + suffix);
+    }
+    inputEl.value = list.join('\\n');
+    window.b128SwitchTab('bulk');
+    currentPage = 1;
+    renderPreview();
+    showToast('Generated ' + count + ' serial barcodes');
+  };
+
+  // CSV/TXT File
+  document.getElementById('b128-file-input').onchange = function(e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+      inputEl.value = evt.target.result;
+      window.b128SwitchTab('bulk');
       currentPage = 1;
       renderPreview();
-      showToast("Loaded 8 sample barcodes from PDF");
+      showToast('Loaded ' + file.name);
     };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
-    // Pagination
-    pagerFirst.onclick = function() { currentPage = 1; renderPreview(); };
-    pagerPrev.onclick = function() { if (currentPage > 1) { currentPage--; renderPreview(); } };
-    pagerNext.onclick = function() {
-      var codes = getBarcodes();
-      var totalPages = Math.ceil(codes.length / (parseInt(perPageEl.value, 10) || 4));
-      if (currentPage < totalPages) { currentPage++; renderPreview(); }
-    };
-    pagerLast.onclick = function() {
-      var codes = getBarcodes();
-      currentPage = Math.max(1, Math.ceil(codes.length / (parseInt(perPageEl.value, 10) || 4)));
-      renderPreview();
-    };
+  // Pager Events
+  pFirst.onclick = function() { currentPage = 1; renderPreview(); };
+  pPrev.onclick = function() { if (currentPage > 1) { currentPage--; renderPreview(); } };
+  pNext.onclick = function() {
+    var codes = getBarcodes();
+    var totalPages = Math.ceil(codes.length / (parseInt(perPageEl.value, 10) || 4));
+    if (currentPage < totalPages) { currentPage++; renderPreview(); }
+  };
+  pLast.onclick = function() {
+    var codes = getBarcodes();
+    currentPage = Math.max(1, Math.ceil(codes.length / (parseInt(perPageEl.value, 10) || 4)));
+    renderPreview();
+  };
 
-    // Zoom Controls
-    function setZoom(val) {
-      currentZoom = Math.min(1.4, Math.max(0.6, val));
-      zoomWrapper.style.transform = "scale(" + currentZoom + ")";
-      zoomText.textContent = Math.round(currentZoom * 100) + "%";
+  // Zoom
+  function setZoom(val) {
+    currentZoom = Math.min(1.4, Math.max(0.6, val));
+    zoomBox.style.transform = 'scale(' + currentZoom + ')';
+    zoomText.textContent = Math.round(currentZoom * 100) + '%';
+  }
+  document.getElementById('b128-z-in').onclick = function() { setZoom(currentZoom + 0.1); };
+  document.getElementById('b128-z-out').onclick = function() { setZoom(currentZoom - 0.1); };
+  document.getElementById('b128-z-reset').onclick = function() { setZoom(1.0); };
+
+  // Inputs
+  inputEl.oninput = renderPreview;
+  perPageEl.onchange = function() { currentPage = 1; renderPreview(); };
+  heightEl.onchange = renderPreview;
+  densityEl.onchange = renderPreview;
+  fontEl.onchange = renderPreview;
+  textEl.onchange = renderPreview;
+  cutlinesEl.onchange = renderPreview;
+  pagenumsEl.onchange = renderPreview;
+
+  // Print (4x6 Thermal)
+  document.getElementById('b128-btn-print').onclick = function() {
+    window.print();
+  };
+
+  // PDF Generator (4x6 Thermal)
+  document.getElementById('b128-btn-pdf').onclick = function() {
+    var codes = getBarcodes();
+    if (codes.length === 0) {
+      alert('Please enter at least one barcode first.');
+      return;
     }
-    document.getElementById("zoom-in").onclick = function() { setZoom(currentZoom + 0.1); };
-    document.getElementById("zoom-out").onclick = function() { setZoom(currentZoom - 0.1); };
-    document.getElementById("zoom-reset").onclick = function() { setZoom(1.0); };
 
-    // Config event listeners
-    inputEl.oninput = renderPreview;
-    perPageEl.onchange = function() { currentPage = 1; renderPreview(); };
-    heightEl.onchange = renderPreview;
-    densityEl.onchange = renderPreview;
-    fontEl.onchange = renderPreview;
-    showTextEl.onchange = renderPreview;
-    cutLinesEl.onchange = renderPreview;
-    pageNumbersEl.onchange = renderPreview;
-
-    // PDF Download
-    document.getElementById("btn-header-pdf").onclick = function() {
-      var codes = getBarcodes();
-      if (codes.length === 0) {
-        alert("Please enter barcode values first.");
-        return;
-      }
-
+    function doGeneratePdf(jsPDFClass) {
       var perPage = parseInt(perPageEl.value, 10) || 4;
       var bHeight = parseInt(heightEl.value, 10) || 55;
       var bWidth = parseFloat(densityEl.value) || 2.0;
       var bFont = fontEl.value;
-      var bShowText = showTextEl.checked;
-      var bCutLines = cutLinesEl.checked;
-      var bPageNumbers = pageNumbersEl.checked;
+      var bShowText = textEl.checked;
+      var bCutLines = cutlinesEl.checked;
+      var bPageNumbers = pagenumsEl.checked;
 
-      var { jsPDF } = window.jspdf;
-      var doc = new jsPDF({
-        orientation: "portrait",
-        unit: "in",
+      var doc = new jsPDFClass({
+        orientation: 'portrait',
+        unit: 'in',
         format: [4.0, 6.0]
       });
 
@@ -1562,14 +1151,14 @@ export function getFullStandaloneHtmlDocument(): string {
       var slotHeight = usableHeight / perPage;
 
       for (var p = 0; p < totalPages; p++) {
-        if (p > 0) doc.addPage([4.0, 6.0], "portrait");
+        if (p > 0) doc.addPage([4.0, 6.0], 'portrait');
         var slice = codes.slice(p * perPage, (p + 1) * perPage);
 
         for (var s = 0; s < slice.length; s++) {
-          var canvas = document.createElement("canvas");
+          var canvas = document.createElement('canvas');
           try {
             JsBarcode(canvas, slice[s], {
-              format: "CODE128",
+              format: 'CODE128',
               width: bWidth,
               height: bHeight,
               displayValue: bShowText,
@@ -1577,10 +1166,10 @@ export function getFullStandaloneHtmlDocument(): string {
               fontSize: 15,
               textMargin: 4,
               margin: 6,
-              background: "#ffffff"
+              background: '#ffffff'
             });
 
-            var imgData = canvas.toDataURL("image/png");
+            var imgData = canvas.toDataURL('image/png');
             var aspect = canvas.width / canvas.height;
             var maxW = 3.5;
             var maxH = slotHeight * 0.82;
@@ -1595,7 +1184,7 @@ export function getFullStandaloneHtmlDocument(): string {
             var slotTop = margin + (s * slotHeight);
             var rY = slotTop + (slotHeight - rH) / 2;
 
-            doc.addImage(imgData, "PNG", rX, rY, rW, rH);
+            doc.addImage(imgData, 'PNG', rX, rY, rW, rH);
 
             if (bCutLines && s < slice.length - 1) {
               var lineY = slotTop + slotHeight;
@@ -1606,47 +1195,81 @@ export function getFullStandaloneHtmlDocument(): string {
               doc.setLineDashPattern([], 0);
             }
           } catch (err) {
-            // ignore invalid
+            // Ignore single barcode render error
           }
         }
 
         if (bPageNumbers && totalPages > 1) {
-          doc.setFont("Helvetica", "normal");
+          doc.setFont('Helvetica', 'normal');
           doc.setFontSize(7);
           doc.setTextColor(140, 140, 140);
-          doc.text("Page " + (p + 1) + " of " + totalPages + " • 4\" x 6\" Thermal Label", 2.0, 5.88, { align: "center" });
+          doc.text('Page ' + (p + 1) + ' of ' + totalPages + ' \u2022 4" \u00D7 6" Thermal Label', 2.0, 5.88, { align: 'center' });
         }
       }
 
-      doc.save("code128-4x6-labels.pdf");
-      showToast("Downloaded 4x6 PDF with " + codes.length + " barcodes");
-    };
-
-    // Print
-    document.getElementById("btn-header-print").onclick = function() {
-      window.print();
-    };
-
-    // Blogger Modal
-    var modal = document.getElementById("blogger-modal");
-    var snippetCode = document.getElementById("blogger-code-snippet");
-    document.getElementById("btn-blogger-modal").onclick = function() {
-      snippetCode.textContent = '<div style="width: 100%; max-width: 1100px; margin: 0 auto;">\\n  <!-- Embed code 128 widget -->\\n</div>';
-      modal.className = "modal-backdrop show";
-    };
-    function closeBloggerModal() {
-      modal.className = "modal-backdrop";
+      doc.save('code128-4x6-labels.pdf');
+      showToast('Downloaded 4x6 PDF with ' + codes.length + ' barcodes');
     }
-    document.getElementById("btn-copy-snippet").onclick = function() {
-      navigator.clipboard.writeText(snippetCode.textContent);
-      showToast("Copied Blogger snippet!");
-      closeBloggerModal();
-    };
 
-    // Initialize with sample
-    inputEl.value = sampleData.join("\\n");
+    if (window.jspdf && window.jspdf.jsPDF) {
+      doGeneratePdf(window.jspdf.jsPDF);
+    } else {
+      showToast('Loading PDF engine...');
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      s.onload = function() {
+        if (window.jspdf && window.jspdf.jsPDF) {
+          doGeneratePdf(window.jspdf.jsPDF);
+        } else {
+          alert('Could not initialize jsPDF. Please use the Print button to print or save as 4x6 PDF.');
+        }
+      };
+      s.onerror = function() {
+        alert('Could not load PDF library. You can click &quot;Print (4x6 Thermal)&quot; to save as 4x6 PDF via your browser.');
+      };
+      document.head.appendChild(s);
+    }
+  };
+
+  // Prepopulate sample and render
+  inputEl.value = sampleData.join('\\n');
+  ensureJsBarcode(function() {
     renderPreview();
-  </script>
+  });
+})();
+<\/script>`;
+}
+
+/**
+ * Backward-compatible alias for getFullBloggerSnippet.
+ */
+export function getBloggerStandaloneWidgetCode(): string {
+  return getFullBloggerSnippet();
+}
+
+/**
+ * Complete standalone HTML document for offline double-clicking and saving.
+ */
+export function getFullStandaloneHtmlDocument(): string {
+  const toolHtml = getFullBloggerSnippet();
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code 128 Bulk Barcode Generator &bull; 4x6 Label Sheet</title>
+  <meta name="description" content="Generate bulk Code 128 barcodes and download standard 4x6 inch thermal label PDFs.">
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f1f5f9;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+${toolHtml}
 </body>
 </html>`;
 }
@@ -1654,7 +1277,7 @@ export function getFullStandaloneHtmlDocument(): string {
 /**
  * Initiates the download of the standalone HTML file in the browser.
  */
-export function downloadStandaloneHtmlFile(filename = 'code128-bulk-barcode-4x6-generator.html'): void {
+export function downloadStandaloneHtmlFile(filename = 'code128-barcode-generator-4x6.html'): void {
   const htmlContent = getFullStandaloneHtmlDocument();
   const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
