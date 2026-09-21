@@ -1,0 +1,6 @@
+{
+  "name": "Code 128 Bulk Barcode & 4x6 PDF Generator",
+  "description": "Generate bulk Code 128 barcodes with 4x6 thermal label PDF export (up to 4 per page), live preview, print support, and Blogger embed widget.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

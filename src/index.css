@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer utilities {
+  @media print {
+    @page {
+      size: 4in 6in;
+      margin: 0.15in;
+    }
+
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    .print-only {
+      display: block !important;
+    }
+
+    .print-page-break {
+      page-break-after: always;
+      break-after: page;
+      height: 5.7in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      box-sizing: border-box;
+    }
+  }
+
+  @media screen {
+    .print-only {
+      display: none !important;
+    }
+  }
+}
